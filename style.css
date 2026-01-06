@@ -12,9 +12,9 @@ body {
   background: white;
   padding: 30px;
   border-radius: 10px;
-  width: 300px;
+  width: 750px;
   text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.2);
 }
 
 input {
@@ -30,7 +30,7 @@ button {
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 button:hover {
@@ -39,5 +39,5 @@ button:hover {
 
 .weather {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 50px;
 }
