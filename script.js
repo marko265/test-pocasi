@@ -16,15 +16,19 @@ function getWeather() {
       }
       return response.json();
     })
-    .then(data => {
-      weatherDiv.innerHTML = `
-        <p><strong>${data.name}</strong></p>
-        <p>🌡️ ${data.main.temp} °C</p>
-        <p>☁️ ${data.weather[0].description}</p>
-        <p>💨 Vítr: ${data.wind.speed} m/s</p>
-      `;
-    })
-    .catch(error => {
-      weatherDiv.innerText = "Město nenalezeno ❌";
-    });
+.then(data => {
+  const iconCode = data.weather[0].icon;
+  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+  weatherDiv.innerHTML = `
+    <p><strong>${data.name}</strong></p>
+    <img src="${iconUrl}" alt="Počasí">
+    <p>🌡️ ${data.main.temp} °C</p>
+    <p>${data.weather[0].description}</p>
+    <p>💨 Vítr: ${data.wind.speed} m/s</p>
+  `;
+})
+.catch(error => {
+  weatherDiv.innerText = "Město nenalezeno ❌";
+});
 }
