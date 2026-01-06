@@ -11,7 +11,7 @@ body {
 .container {
   background: white;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 20px;
   width: 400px;
   height: 400px;
   text-align: center;
@@ -19,21 +19,21 @@ body {
 }
 
 input {
-  width: 100%;
+  width: 80%;
   padding: 8px;
   margin-bottom: 10px;
   font-size: 25px;
 }
 
 button {
-  padding: 30px;
+  padding: 20px;
   width: 100%;
   background: #0984e3;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 10px;
-  font-size: 25px;
+  font-size: 30px;
 }
 
 button:hover {
