@@ -62,3 +62,15 @@ body.night .container {
 body.day .container {
   background: #ffffff;
 }
+.weather hr {
+  margin: 15px 0;
+  opacity: 0.3;
+}
+@keyframes hoverEffect {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}

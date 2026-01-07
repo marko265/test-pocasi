@@ -25,15 +25,30 @@ function getWeather() {
   const sunset = data.sys.sunset;
 
   const isDay = currentTime >= sunrise && currentTime < sunset;
-
   document.body.className = isDay ? "day" : "night";
+
+  // převod času z UNIX na normální čas
+  function formatTime(timestamp) {
+    return new Date(timestamp * 1000).toLocaleTimeString("cs-CZ", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
 
   weatherDiv.innerHTML = `
     <p><strong>${data.name}</strong></p>
-    <img src="${iconUrl}" alt="Počasí">
+
+
     <p>🌡️ ${data.main.temp} °C</p>
+    <img src="${iconUrl}" alt="Počasí">
     <p>${data.weather[0].description}</p>
     <p>💨 Vítr: ${data.wind.speed} m/s</p>
+
+    <hr>
+
+    <p>☀️ Východ slunce: ${formatTime(sunrise)}</p>
+    <p>🌇 Západ slunce: ${formatTime(sunset)}</p>
+
     <p>${isDay ? "🌞 Den" : "🌙 Noc"}</p>
   `;
 })
