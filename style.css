@@ -12,7 +12,7 @@ body {
   background: white;
   padding: 30px;
   border-radius: 20px;
-  width: 60px;
+  width: 500px;
   text-align: center;
   box-shadow: 0 50px 50px rgba(0,0,0,0.2);
 }
@@ -44,4 +44,21 @@ button:hover {
 .weather {
   margin-top: 20px;
   font-size: 30px;
+}
+body.day {
+  background: linear-gradient(135deg, #74b9ff, #81ecec);
+  color: #000;
+}
+
+body.night {
+  background: linear-gradient(135deg, #2c3e50, #0a3d62);
+  color: #fff;
+}
+
+body.night .container {
+  background: #1e272e;
+}
+
+body.day .container {
+  background: #ffffff;
 }
