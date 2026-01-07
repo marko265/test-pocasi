@@ -22,9 +22,9 @@ function getWeather() {
 
   weatherDiv.innerHTML = `
     <p><strong>${data.name}</strong></p>
-    <img src="${iconUrl}" alt="Počasí">
     <p>🌡️ ${data.main.temp} °C</p>
-    <p>${data.weather[0].description}</p>
+    <p>${data.weather[0].description}</p>a
+    <img src="${iconUrl}" alt="Počasí">
     <p>💨 Vítr: ${data.wind.speed} m/s</p>
   `;
 })
