@@ -55,4 +55,55 @@ function getWeather() {
 .catch(error => {
   weatherDiv.innerText = "Město nenalezeno ❌";
 });
+getForecast(city);
+}
+function getForecast(city) {
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&lang=cz&appid=${apiKey}`)
+    .then(response => response.json())
+    .then(data => {
+
+      // ⏱️ 12 HODIN
+      let hourlyHTML = "<h3>⏱️ Dalších 12 hodin</h3>";
+      for (let i = 0; i < 4; i++) {
+        const item = data.list[i];
+        const time = new Date(item.dt * 1000).toLocaleTimeString("cs-CZ", {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+        const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
+
+        hourlyHTML += `
+          <div class="forecast-item">
+            <span>${time}</span>
+            <img src="${icon}">
+            <span>${Math.round(item.main.temp)} °C</span>
+          </div>
+        `;
+      }
+
+      document.getElementById("hourly").innerHTML = hourlyHTML;
+
+      // 📅 4 DNY
+      let dailyHTML = "<h3>📅 Další 4 dny</h3>";
+      const daysUsed = [];
+
+      data.list.forEach(item => {
+        const date = new Date(item.dt * 1000).toLocaleDateString("cs-CZ");
+
+        if (!daysUsed.includes(date) && daysUsed.length < 4) {
+          daysUsed.push(date);
+          const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
+
+          dailyHTML += `
+            <div class="forecast-item">
+              <span>${date}</span>
+              <img src="${icon}">
+              <span>${Math.round(item.main.temp)} °C</span>
+            </div>
+          `;
+        }
+      });
+
+      document.getElementById("daily").innerHTML = dailyHTML;
+    });
 }
