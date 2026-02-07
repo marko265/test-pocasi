@@ -85,7 +85,7 @@ function showHourly(data) {
 
   for (let i = 0; i < 6; i++) {
 
-    const item = data.list[i * 1]; // každé 3h → cca 2h interval
+    const item = data.list[i * 3]; // každé 3h → cca 2h interval
 
     const time = formatTime(item.dt);
     const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
@@ -113,7 +113,7 @@ function showDaily(data) {
 
     const date = new Date(item.dt * 1000).toLocaleDateString("cs-CZ");
 
-    if (!used.includes(date) && used.length < 6) {
+    if (!used.includes(date) && used.length < 4) {
 
       used.push(date);
 
