@@ -87,9 +87,14 @@ h1 {
   width: 35px;
 }
 
-/* Responsivní – mobil */
-@media (max-width: 800px) {
-  .panels {
-    grid-template-columns: 1fr;
-  }
+.panels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+#current .card {
+  font-size: 15px;
+  justify-content: center;
+  text-align: center;
 }

@@ -18,33 +18,50 @@ function getWeather() {
 function getCurrent(city) {
 
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=cz&appid=${apiKey}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error("Město nenalezeno");
+      return res.json();
+    })
     .then(data => {
 
       const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
       const html = `
         <div class="card">
-          <span>${data.name}</span>
-          <img src="${icon}">
-          <span>${Math.round(data.main.temp)} °C</span>
+          <strong>${data.name}</strong>
+        </div>
+
+        <div class="card" style="justify-content:center;">
+          <img src="${icon}" style="width:70px">
         </div>
 
         <div class="card">
-          <span>${data.weather[0].description}</span>
-          <span>💨 ${data.wind.speed} m/s</span>
+          🌡️ ${Math.round(data.main.temp)} °C
+          (pocitově ${Math.round(data.main.feels_like)} °C)
         </div>
 
         <div class="card">
-          <span>☀️ ${formatTime(data.sys.sunrise)}</span>
-          <span>🌇 ${formatTime(data.sys.sunset)}</span>
+          ☁️ ${data.weather[0].description}
+        </div>
+
+        <div class="card">
+          💨 Vítr: ${data.wind.speed} m/s
+        </div>
+
+        <div class="card">
+          💧 Vlhkost: ${data.main.humidity} %
         </div>
       `;
 
       document.querySelector("#current .content").innerHTML = html;
 
+    })
+    .catch(err => {
+      document.querySelector("#current .content").innerHTML =
+        `<div class="card">❌ ${err.message}</div>`;
     });
 }
+
 
 
 /* ===== PŘEDPOVĚĎ ===== */
