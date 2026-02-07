@@ -77,7 +77,6 @@ body.day .container {
 .forecast {
   margin-top: 20px;
   font-size: 30px;
-  padding: 20px;
 }
 
 .forecast-row {
@@ -102,6 +101,6 @@ body.night .forecast-card {
 }
 
 .forecast-card img {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
 }
