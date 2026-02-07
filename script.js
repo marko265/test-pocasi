@@ -62,18 +62,24 @@ function getForecast(city) {
     .then(response => response.json())
     .then(data => {
 
-      // ⏱️ 12 HODIN
-      let hourlyHTML = "<h3>⏱️ Dalších 12 hodin</h3>";
+      /* ===== 12 HODIN ===== */
+      let hourlyHTML = `
+        <h3>⏱️ Dalších 12 hodin</h3>
+        <div class="forecast-row">
+      `;
+
       for (let i = 0; i < 4; i++) {
         const item = data.list[i];
+
         const time = new Date(item.dt * 1000).toLocaleTimeString("cs-CZ", {
           hour: "2-digit",
           minute: "2-digit"
         });
+
         const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
 
         hourlyHTML += `
-          <div class="forecast-item">
+          <div class="forecast-card">
             <span>${time}</span>
             <img src="${icon}">
             <span>${Math.round(item.main.temp)} °C</span>
@@ -81,10 +87,17 @@ function getForecast(city) {
         `;
       }
 
+      hourlyHTML += "</div>";
+
       document.getElementById("hourly").innerHTML = hourlyHTML;
 
-      // 📅 4 DNY
-      let dailyHTML = "<h3>📅 Další 4 dny</h3>";
+
+      /* ===== 4 DNY ===== */
+      let dailyHTML = `
+        <h3>📅 Další 4 dny</h3>
+        <div class="forecast-row">
+      `;
+
       const daysUsed = [];
 
       data.list.forEach(item => {
@@ -92,10 +105,11 @@ function getForecast(city) {
 
         if (!daysUsed.includes(date) && daysUsed.length < 4) {
           daysUsed.push(date);
+
           const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
 
           dailyHTML += `
-            <div class="forecast-item">
+            <div class="forecast-card">
               <span>${date}</span>
               <img src="${icon}">
               <span>${Math.round(item.main.temp)} °C</span>
@@ -103,6 +117,8 @@ function getForecast(city) {
           `;
         }
       });
+
+      dailyHTML += "</div>";
 
       document.getElementById("daily").innerHTML = dailyHTML;
     });
