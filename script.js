@@ -1,125 +1,128 @@
 const apiKey = "fd613648e5da23a9e42ecce607814409";
 
 function getWeather() {
+
   const city = document.getElementById("city").value;
-  const weatherDiv = document.getElementById("weather");
 
   if (city === "") {
-    weatherDiv.innerText = "Zadej název města 🌍";
+    alert("Zadej město");
     return;
   }
 
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=cz&appid=${apiKey}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Město nenalezeno");
-      }
-      return response.json();
-    })
-.then(data => {
-  const iconCode = data.weather[0].icon;
-  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-
-  const currentTime = data.dt;
-  const sunrise = data.sys.sunrise;
-  const sunset = data.sys.sunset;
-
-  const isDay = currentTime >= sunrise && currentTime < sunset;
-  document.body.className = isDay ? "day" : "night";
-
-  // převod času z UNIX na normální čas
-  function formatTime(timestamp) {
-    return new Date(timestamp * 1000).toLocaleTimeString("cs-CZ", {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  }
-
-  weatherDiv.innerHTML = `
-    <p><strong>${data.name}</strong></p>
-
-
-    <p>🌡️ ${data.main.temp} °C</p>
-    <img src="${iconUrl}" alt="Počasí">
-    <p>${data.weather[0].description}</p>
-    <p>💨 Vítr: ${data.wind.speed} m/s</p>
-
-    <hr>
-
-    <p>☀️ Východ slunce: ${formatTime(sunrise)}</p>
-    <p>🌇 Západ slunce: ${formatTime(sunset)}</p>
-
-    <p>${isDay ? "🌞 Den" : "🌙 Noc"}</p>
-  `;
-})
-.catch(error => {
-  weatherDiv.innerText = "Město nenalezeno ❌";
-});
-getForecast(city);
+  getCurrent(city);
+  getForecast(city);
 }
-function getForecast(city) {
-  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&lang=cz&appid=${apiKey}`)
-    .then(response => response.json())
+
+
+/* ===== AKTUÁLNÍ POČASÍ ===== */
+function getCurrent(city) {
+
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=cz&appid=${apiKey}`)
+    .then(res => res.json())
     .then(data => {
 
-      /* ===== 12 HODIN ===== */
-      let hourlyHTML = `
-        <h3>⏱️ Dalších 12 hodin</h3>
-        <div class="forecast-row">
+      const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+      const html = `
+        <div class="card">
+          <span>${data.name}</span>
+          <img src="${icon}">
+          <span>${Math.round(data.main.temp)} °C</span>
+        </div>
+
+        <div class="card">
+          <span>${data.weather[0].description}</span>
+          <span>💨 ${data.wind.speed} m/s</span>
+        </div>
+
+        <div class="card">
+          <span>☀️ ${formatTime(data.sys.sunrise)}</span>
+          <span>🌇 ${formatTime(data.sys.sunset)}</span>
+        </div>
       `;
 
-      for (let i = 0; i < 4; i++) {
-        const item = data.list[i];
+      document.querySelector("#current .content").innerHTML = html;
 
-        const time = new Date(item.dt * 1000).toLocaleTimeString("cs-CZ", {
-          hour: "2-digit",
-          minute: "2-digit"
-        });
-
-        const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
-
-        hourlyHTML += `
-          <div class="forecast-card">
-            <span>${time}</span>
-            <img src="${icon}">
-            <span>${Math.round(item.main.temp)} °C</span>
-          </div>
-        `;
-      }
-
-      hourlyHTML += "</div>";
-
-      document.getElementById("hourly").innerHTML = hourlyHTML;
-
-
-      /* ===== 4 DNY ===== */
-      let dailyHTML = `
-        <h3>📅 Další 4 dny</h3>
-        <div class="forecast-row">
-      `;
-
-      const daysUsed = [];
-
-      data.list.forEach(item => {
-        const date = new Date(item.dt * 1000).toLocaleDateString("cs-CZ");
-
-        if (!daysUsed.includes(date) && daysUsed.length < 4) {
-          daysUsed.push(date);
-
-          const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
-
-          dailyHTML += `
-            <div class="forecast-card">
-              <span>${date}</span>
-              <img src="${icon}">
-              <span>${Math.round(item.main.temp)} °C</span>
-            </div>
-          `;
-        }
-      });
-
-      dailyHTML += "</div>";
-
-      document.getElementById("daily").innerHTML = dailyHTML;
     });
+}
+
+
+/* ===== PŘEDPOVĚĎ ===== */
+function getForecast(city) {
+
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&lang=cz&appid=${apiKey}`)
+    .then(res => res.json())
+    .then(data => {
+
+      showHourly(data);
+      showDaily(data);
+
+    });
+}
+
+
+/* ===== 12 HODIN PO 2 HOD ===== */
+function showHourly(data) {
+
+  let html = "";
+
+  for (let i = 0; i < 6; i++) {
+
+    const item = data.list[i * 1]; // každé 3h → cca 2h interval
+
+    const time = formatTime(item.dt);
+    const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
+
+    html += `
+      <div class="card">
+        <span>${time}</span>
+        <img src="${icon}">
+        <span>${Math.round(item.main.temp)} °C</span>
+      </div>
+    `;
+  }
+
+  document.querySelector("#hourly .content").innerHTML = html;
+}
+
+
+/* ===== 4 DNY ===== */
+function showDaily(data) {
+
+  let html = "";
+  const used = [];
+
+  data.list.forEach(item => {
+
+    const date = new Date(item.dt * 1000).toLocaleDateString("cs-CZ");
+
+    if (!used.includes(date) && used.length < 4) {
+
+      used.push(date);
+
+      const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
+
+      html += `
+        <div class="card">
+          <span>${date}</span>
+          <img src="${icon}">
+          <span>${Math.round(item.main.temp)} °C</span>
+        </div>
+      `;
+    }
+
+  });
+
+  document.querySelector("#daily .content").innerHTML = html;
+}
+
+
+/* ===== FORMÁT ČASU ===== */
+function formatTime(timestamp) {
+
+  return new Date(timestamp * 1000).toLocaleTimeString("cs-CZ", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
 }

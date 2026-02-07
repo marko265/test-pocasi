@@ -2,21 +2,40 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Počasí</title>
+  <title>Počasí App</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    <h1>Počasí 🌦️</h1>
 
-    <input type="text" id="city" placeholder="Zadej město">
-    <button onclick="getWeather()">Zobrazit počasí</button>
+    <h1>🌦️ Počasí</h1>
 
-    <div id="weather" class="weather"></div>
+    <div class="search">
+      <input type="text" id="city" placeholder="Zadej město">
+      <button onclick="getWeather()">Hledat</button>
+    </div>
+
+    <div class="panels">
+
+      <div class="panel" id="current">
+        <h2>Aktuální počasí</h2>
+        <div class="content"></div>
+      </div>
+
+      <div class="panel" id="hourly">
+        <h2>12 hodin (po 2 h)</h2>
+        <div class="content"></div>
+      </div>
+
+      <div class="panel" id="daily">
+        <h2>4 dny</h2>
+        <div class="content"></div>
+      </div>
+
+    </div>
+
   </div>
-  <div id="hourly" class="forecast"></div>
-  <div id="daily" class="forecast"></div>
 
   <script src="script.js"></script>
 </body>
