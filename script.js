@@ -113,7 +113,7 @@ function showDaily(data) {
 
     const date = new Date(item.dt * 1000).toLocaleDateString("cs-CZ");
 
-    if (!used.includes(date) && used.length < 4) {
+    if (!used.includes(date) && used.length < 6) {
 
       used.push(date);
 
