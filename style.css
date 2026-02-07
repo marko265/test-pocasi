@@ -78,6 +78,8 @@ body.day .container {
   margin-top: 20px;
   font-size: 14px;
   padding: 20px;
+  border: #000 solid 1px;
+  border-radius: 15px;
 }
 
 .forecast h3 {
@@ -89,6 +91,8 @@ body.day .container {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
+  border: #000 solid 1px;
+  border-radius: 15px;
 }
 
 .forecast-item img {
