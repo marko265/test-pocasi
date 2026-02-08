@@ -24,6 +24,17 @@ function getCurrent(city) {
     })
     .then(data => {
 
+      // určení den / noc podle slunce
+      const now = data.dt;
+      const sunrise = data.sys.sunrise;
+      const sunset = data.sys.sunset;
+
+      const isDay = now >= sunrise && now < sunset;
+
+      document.body.classList.remove("day", "night");
+      document.body.classList.add(isDay ? "day" : "night");
+
+
       const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
       const html = `

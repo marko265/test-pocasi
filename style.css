@@ -99,3 +99,39 @@ h1 {
   justify-content: center;
   text-align: center;
 }
+
+/* ===== ANIMOVANÉ POZADÍ ===== */
+
+body {
+  transition: background 1.5s ease-in-out;
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+
+/* DEN */
+body.day {
+  background: linear-gradient(
+    -45deg,
+    #74b9ff,
+    #81ecec,
+    #a29bfe,
+    #dfe6e9
+  );
+}
+
+/* NOC */
+body.night {
+  background: linear-gradient(
+    -45deg,
+    #0f2027,
+    #203a43,
+    #2c5364,
+    #1e272e
+  );
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
